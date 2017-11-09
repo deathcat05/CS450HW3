@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF4C4DA01FB2BB6000CE4AA7 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BF4C4D9F1FB2BB6000CE4AA7 /* main.c */; };
+		BF4C4DA81FB2BBCB00CE4AA7 /* sudoku.c in Sources */ = {isa = PBXBuildFile; fileRef = BF4C4DA61FB2BBCB00CE4AA7 /* sudoku.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		BF4C4D9C1FB2BB6000CE4AA7 /* HW3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HW3; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF4C4D9F1FB2BB6000CE4AA7 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		BF4C4DA61FB2BBCB00CE4AA7 /* sudoku.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sudoku.c; sourceTree = "<group>"; };
+		BF4C4DA71FB2BBCB00CE4AA7 /* sudoku.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sudoku.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				BF4C4D9F1FB2BB6000CE4AA7 /* main.c */,
+				BF4C4DA61FB2BBCB00CE4AA7 /* sudoku.c */,
+				BF4C4DA71FB2BBCB00CE4AA7 /* sudoku.h */,
 			);
 			path = HW3;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF4C4DA81FB2BBCB00CE4AA7 /* sudoku.c in Sources */,
 				BF4C4DA01FB2BB6000CE4AA7 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
