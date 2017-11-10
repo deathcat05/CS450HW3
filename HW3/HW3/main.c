@@ -21,8 +21,8 @@ typedef struct
     
 } parameters;
 
-void validateRow(int **sudokuTable);
-void validateColumn(int **sudokuTable);
+void *validateRow(void *sudokuTable);
+void *validateColumn(void *sudokuTable);
 void  *validateGrid(void *sudokuTable);
 
 int main(void)
@@ -62,18 +62,32 @@ int main(void)
     {
         for(int j =0; j < MAXCOLUMN; j++)
         {
-            printf("%d", puzzle[i][j]);
+            printf("%d", puzzle[i][j]); //JUST TEST DATA. DELETE BEFORE SUBMISSION!
             if((i%3 == 0) && (j%3 == 0)) //Establishing 3x3 grid
             {
+                
                 parameters *gridData = (parameters*) malloc(sizeof(parameters));
                 gridData->row = i; //Assigning the i value to row of the struct
                 gridData->column = j; //Assigning the j value to the column of the struct
                 gridData->sudokuPuzzle[i][j] = puzzle[i][j];
                 //pthread_t thread = gridData->threadID;
                 gridData->threadNumber = threadNum;
-                pthread_create(&thread[threadNum++], NULL, validateGrid, gridData); //Creating the subsections threads
+               // pthread_create(&thread[threadNum++], NULL, validateGrid, gridData); //Creating the subsections threads
+            }
+            if(j == 0)
+            {
+                parameters *rowData = (parameters*) malloc(sizeof(parameters));
+                rowData->row =i;
+                rowData->column = j;
+                rowData->sudokuPuzzle[i][j] = puzzle[i][j];
+                pthread_create(&thread[threadNum++], NULL, validateRow, rowData);
+                
             }
         }
+    }
+    for(int i =0; i < NUMTHREADS; i++)
+    {
+        pthread_join(thread[i], NULL);
     }
     
 }
@@ -83,14 +97,15 @@ void *validateGrid(void *sudokuPuzzle)
     parameters *grid = (parameters*) sudokuPuzzle;
     int row = grid->row;
     int col = grid->column;
+    int num = 0;
     int arrayToCheck[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; //The array used to check
-   // int num = puzzle[row][col];
     
-    for(int i = row; i < i+3; i++)
+    for(int i = row; i < (row+3); i++)
     {
-        for(int j = col; j < j+3; j++)
+        for(int j = col; j < (col+3); j++)
         {
-            int num = grid->sudokuPuzzle[i][j];
+            
+            num = grid->sudokuPuzzle[i][j];
             if(arrayToCheck[num-1] == 1)
             {
                 printf("Error in grid");
@@ -101,6 +116,30 @@ void *validateGrid(void *sudokuPuzzle)
                 printf("grids are valid");
                 
             }
+        }
+    }
+    return 0;
+}
+
+void *validateRow(void *sudokuPuzzle)
+{
+    parameters *rows = (parameters*) sudokuPuzzle;
+    int row = rows->row;
+    int column = rows->column;
+    int checkArray[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0,0};
+    
+    for(int i = 0; i < MAXROW; i++)
+    {
+        int num = rows->sudokuPuzzle[row][i];
+        if(checkArray[num] ==1)
+        {
+            printf("Error in row %d\n", row);
+        }
+        else
+        {
+            checkArray[num] = 1;
+            printf("No errors in row!\n");
+            
         }
     }
     return 0;
