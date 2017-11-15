@@ -1,4 +1,3 @@
-//#include "sudoku.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -59,7 +58,8 @@ int main(void)
     pthread_t* thread;
     thread = malloc(NUMTHREADS*sizeof(pthread_t));
     int threadNum = 0;
-    
+    for(threadNum; threadNum < NUMTHREADS; threadNum++)
+    {
     for(int i = 0; i < MAXROW; i++)
     {
         for(int j =0; j < MAXCOLUMN; j++)
@@ -76,21 +76,22 @@ int main(void)
                 gridData->threadCount = threadNum;
                 // pthread_create(&thread[threadNum++], NULL, validateGrid, gridData); //Creating the subsections threads
             }
-            if(i == 0)
+            if(j == 0)
             {
                 parameters *rowData = (parameters*) malloc(sizeof(parameters));
                 rowData->row =i;
                 rowData->column = j;
                 rowData->sudokuPuzzle[i][j] = puzzle[i][j];
                 rowData->threadCount = threadNum;
-                pthread_create(&thread[threadNum++], NULL, validateRow, rowData);
+                pthread_create(&thread[threadNum], NULL, validateRow, rowData);
                 
             }
         }
     }
-    for(int i =0; i < NUMTHREADS; i++)
+    }
+    for(threadNum; threadNum < NUMTHREADS; threadNum++)
     {
-        pthread_join(thread[i], NULL);
+        pthread_join(thread[threadNum], NULL);
     }
     
 }
