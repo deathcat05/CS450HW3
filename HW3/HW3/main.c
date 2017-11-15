@@ -1,4 +1,3 @@
-
 //#include "sudoku.h"
 #include <stdlib.h>
 #include <string.h>
@@ -13,10 +12,10 @@
 //The struct for the threads you
 typedef struct
 {
-   // pthread_t threadID;
+    // pthread_t threadID;
     int row;
     int column;
-    int threadNumber;
+    int threadCount;
     int sudokuPuzzle[9][9];
     
 } parameters;
@@ -28,7 +27,7 @@ void  *validateGrid(void *sudokuTable);
 int main(void)
 {
     //parameters *puzzle = (parameters*) malloc(sizeof(parameters));
-
+    
     //File readin operations
     FILE *file;
     int puzzle[9][9];
@@ -52,17 +51,20 @@ int main(void)
             
         }
     }
+    fclose(file);
     
-//Establishing the thread(s) for interaction 
     
-    pthread_t thread[NUMTHREADS];
+    //Establishing the thread(s) for interaction
+    
+    pthread_t* thread;
+    thread = malloc(NUMTHREADS*sizeof(pthread_t));
     int threadNum = 0;
     
     for(int i = 0; i < MAXROW; i++)
     {
         for(int j =0; j < MAXCOLUMN; j++)
         {
-            printf("%d", puzzle[i][j]); //JUST TEST DATA. DELETE BEFORE SUBMISSION!
+            //printf("%d", puzzle[i][j]); //JUST TEST DATA. DELETE BEFORE SUBMISSION!
             if((i%3 == 0) && (j%3 == 0)) //Establishing 3x3 grid
             {
                 
@@ -71,15 +73,16 @@ int main(void)
                 gridData->column = j; //Assigning the j value to the column of the struct
                 gridData->sudokuPuzzle[i][j] = puzzle[i][j];
                 //pthread_t thread = gridData->threadID;
-                gridData->threadNumber = threadNum;
-               // pthread_create(&thread[threadNum++], NULL, validateGrid, gridData); //Creating the subsections threads
+                gridData->threadCount = threadNum;
+                // pthread_create(&thread[threadNum++], NULL, validateGrid, gridData); //Creating the subsections threads
             }
-            if(j == 0)
+            if(i == 0)
             {
                 parameters *rowData = (parameters*) malloc(sizeof(parameters));
                 rowData->row =i;
                 rowData->column = j;
                 rowData->sudokuPuzzle[i][j] = puzzle[i][j];
+                rowData->threadCount = threadNum;
                 pthread_create(&thread[threadNum++], NULL, validateRow, rowData);
                 
             }
@@ -112,7 +115,7 @@ void *validateGrid(void *sudokuPuzzle)
             }
             else
             {
-               arrayToCheck[num-1] = 1;
+                arrayToCheck[num-1] = 1;
                 printf("grids are valid");
                 
             }
